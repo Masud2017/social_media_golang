@@ -1,0 +1,16 @@
+// package db
+
+// import (
+// 	"github.com/codingfinest/neo4j-go-ogm"
+// )
+
+// type OGM struct {
+
+// }
+
+// func (ogm_obj* OGM) GetSession() (*ogm.Session,error) {
+// 	var ogm = gogm.New("bolt://localhost:7687", "USERNAME", "PASSWORD", gogm.NONE)
+
+// 	return ogm.NewSession(true)
+// }
+
