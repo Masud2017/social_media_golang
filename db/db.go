@@ -3,28 +3,54 @@ package db
 import (
 	"github.com/dgraph-io/dgo/v210"
 	"github.com/dgraph-io/dgo/v210/protos/api"
-
 	"google.golang.org/grpc"
 	"log"
+	"context"
 	
+	"fmt"
+	"time"
 )
 
 type DB struct {
+	Client *dgo.Dgraph
 
 }
 
-func (db *DB) NewClient() *dgo.Dgraph {
-	// Dial a gRPC connection. The address to dial to can be configured when
-	// setting up the dgraph cluster.
-	d, err := grpc.Dial("https://blue-surf-1290226.us-east-1.aws.cloud.dgraph.io/graphql", grpc.WithInsecure())
+func (db *DB) NewClient() {
+	d, err := grpc.Dial("localhost:9080", grpc.WithInsecure())
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	return dgo.NewDgraphClient(
+	db.Client =  dgo.NewDgraphClient(
 		api.NewDgraphClient(d),
 	)
 }
+
+func (db *DB) InitSchema() {
+	op := &api.Operation{}
+
+	op.Schema = `
+				name: string @index(exact) .
+				email: string @index(exact,term).
+				Friend: [uid] .
+				type User {
+					name: string
+					email: string
+					password: string
+					Friend: [Relation]
+				}
+				type Relation {
+					relation_name: string
+					user: User
+				}
+				
+			`
+	
+	
+
+}
+
 
 
 

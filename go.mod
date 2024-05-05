@@ -5,8 +5,6 @@ go 1.18
 require (
 	github.com/dgraph-io/dgo/v210 v210.0.0-20230328113526-b66f8ae53a2d
 	github.com/gin-gonic/gin v1.9.1
-	github.com/swaggo/files v1.0.1
-	github.com/swaggo/gin-swagger v1.6.0
 	github.com/swaggo/swag v1.16.3
 	google.golang.org/grpc v1.59.0
 )

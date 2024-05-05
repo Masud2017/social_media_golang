@@ -1,13 +1,13 @@
 {
     "swagger": "2.0",
     "info": {
-        "title": "Tag service Api",
+        "title": "Social media api",
         "contact": {}
     },
     "paths": {
-        "/": {
+        "/helloworld": {
             "get": {
-                "description": "do nothing",
+                "description": "This end point for testing purpose",
                 "consumes": [
                     "application/json"
                 ],
@@ -15,9 +15,9 @@
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "Publicly exposed"
                 ],
-                "summary": "YOYO example",
+                "summary": "Test hello world",
                 "responses": {
                     "200": {
                         "description": "OK",

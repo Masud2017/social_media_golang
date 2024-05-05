@@ -15,9 +15,9 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/": {
+        "/helloworld": {
             "get": {
-                "description": "do nothing",
+                "description": "This end point for testing purpose",
                 "consumes": [
                     "application/json"
                 ],
@@ -25,9 +25,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "Publicly exposed"
                 ],
-                "summary": "YOYO example",
+                "summary": "Test hello world",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -47,7 +47,7 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "",
 	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "Tag service Api",
+	Title:            "Social media api",
 	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,

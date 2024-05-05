@@ -1,12 +1,12 @@
 info:
   contact: {}
-  title: Tag service Api
+  title: Social media api
 paths:
-  /:
+  /helloworld:
     get:
       consumes:
       - application/json
-      description: do nothing
+      description: This end point for testing purpose
       produces:
       - application/json
       responses:
@@ -14,7 +14,7 @@ paths:
           description: OK
           schema:
             type: string
-      summary: YOYO example
+      summary: Test hello world
       tags:
-      - example
+      - Publicly exposed
 swagger: "2.0"
