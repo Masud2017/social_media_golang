@@ -20,14 +20,13 @@ func SetupRouter()  *gin.Engine {
 	router.GET("/userlist",controller.UserList)
 	router.GET("/me/:my_id",controller.Me)
 	router.GET("/acceptreq",controller.AcceptReq)
+	router.GET("/cancelreq",controller.CancelReq)
 
-	router.GET("/addfriend/:user_id",controller.AddFriend)
-	router.GET("/addmother/:user_id",controller.AddMother)
-	router.GET("/addfather/:user_id",controller.AddFather)
-	router.GET("/addson/:user_id",controller.AddSon)
+	router.GET("/addrelation",controller.AddRelation)
 
 	router.GET("/myrelationlist",controller.MyRelationList)
-	router.GET("/relationship_reqs",controller.RelationShipRequests)
+	router.GET("/relationship_reqs/:user_id",controller.RelationShipRequests)
+	router.GET("/my_relationship_reqs",controller.RelationShipRequests)
 
 	return router;
 }

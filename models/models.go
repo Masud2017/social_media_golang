@@ -8,6 +8,8 @@ type User struct {
 	
 	Friend  []Relation   `json:"friend,omitempty"`
 	// DType    []string   `json:"dgraph.type,omitempty"`
+	Request []RelationRequest `json:"request,omitempty"`
+	RequestFrom []RelationRequestFromOther `json:"request_from,omitempty"`
 
 	
 }
@@ -18,9 +20,20 @@ type Relation struct{
 	// DType    []string   `json:"dgraph.type,omitempty"`
 }
 
-type RelationRequest {
+/*
+These request will be done by the user him/her self
+*/
+type RelationRequest struct {
 	Uid string `json:"uid,omitempty"`
-	ReqFor string `json:"req_for,omitempty"` // user id for the User who will own this relation
-	Rel string `json:"rel,omitempty"`
-	ReqTo string `json:"req_to,omitempty"` // user id for the User who will be the relative
+	ReqRel string `json:"req_rel,omitempty"`
+	ReqTo User `json:"req_to,omitempty"` // user id for the User who will be the relative
+}
+
+/*
+This request will come from others users to the current user
+*/
+type RelationRequestFromOther struct {
+	Uid string `json:"uid,omitempty"`
+	ReqRel string `json:"req_rel,omitempty"`
+	ReqFrom User `json:"req_from,omitempty"` // user id for the User who will be the relative
 }

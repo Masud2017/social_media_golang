@@ -35,19 +35,38 @@ func (db *DB) InitSchema() {
 		name: string @index(exact) .
 		email: string @index(exact,term) .
 		password: string @index(term) .
-		Friend: [uid] .
+		friend: [uid] .
 		rel: string @index(exact) .
 		user : uid .
+		
+		req: string @index(exact,term) . 
+		req_to: uid .
+		request: [uid] .
+
+		req_rel: string @index(exact,term) .
+		request_from: [uid] .
+		req_from: uid .
+		
 		type User {
 			name: string
 			email: string
 			password: string
-			Friend: [Relation]
+			friend: [Relation]
+			request: [RelationRequest]
+			request_from:[RelationRequestFromOther]
 		}
 		type Relation {
 			rel: string
 			user: User
-		}				
+		}	
+		type RelationRequest {
+			req_rel: string
+			req_to: User
+		}			
+		type RelationRequestFromOther {
+			req_rel: string
+			req_from: User
+		}
 	`
 
 	db.SchemaOp = op
@@ -159,15 +178,7 @@ func (db *DB) GetUserList() []models.User {
 	}
 
 	fmt.Println(resp)
-	// if (len(root.FindUserByEmail) == 0) {
-	// 	return false
-	// } else {
-	// 	if (root.FindUserByEmail[0].Email == email) {
-	// 		fmt.Println("This user does exist ..")
-			
-	// 		return true;
-	// 	}
-	// }
+	
 
 	return root.GetAllUsers
 }
@@ -208,6 +219,109 @@ func (db *DB) Me(uid string) models.User {
 
 	return root.GetMe[0]
 }
+
+func (db *DB) RequestForRelationship(relReq models.RelationRequest,me models.User) models.RelationRequest {
+	db.InitSchema()
+
+	mu := &api.Mutation{
+		CommitNow: true,
+	}
+
+	// me.Request = relReq
+	me.Request = append(me.Request, relReq)
+	
+
+	pb, err := json.Marshal(me)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	mu.SetJson = pb
+
+	fmt.Println("Printing the value of pb : ",pb)
+	response, err := db.Client.NewTxn().Mutate(db.ctx, mu)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(response.GetJson())
+
+	// after that need to populate other user info too
+
+	reqFrom := models.RelationRequestFromOther{
+		Uid : "_:req_from",
+		ReqRel : relReq.ReqRel,
+		ReqFrom : models.User{
+			Uid : me.Uid,
+			Name: me.Name,
+			Email: me.Email,
+		},
+	}
+	reqToUser := relReq.ReqTo
+	reqToUser.RequestFrom = append(reqToUser.RequestFrom,reqFrom)
+
+	pb2, err := json.Marshal(reqToUser)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	mu.SetJson = pb2
+	
+	db.Client.NewTxn().Mutate(db.ctx, mu)
+	
+
+	return relReq
+}
+
+
+/*
+This function will return all the relation ship requests from other users 
+*/
+func (db *DB) RelationShipRequests(user_id string) []models.RelationRequestFromOther {
+	db.InitSchema()
+	
+	query := `
+	{
+		getRelationShipRequestFromOther(func: uid(`+user_id+`)) {
+			request_from {
+				uid
+				req_rel
+				req_from {
+					uid
+					name
+					email
+				}
+			}
+		}
+	}
+	`
+
+	resp, err := db.Client.NewTxn().Query(db.ctx,query)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	
+	type Root struct {
+		GetRelationShipRequestFromOther []models.User `json:"getRelationShipRequestFromOther,omitempty"`
+	}
+	var root Root
+	
+	if err := json.Unmarshal(resp.GetJson(), &root); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Printing the value of resp :")
+
+	fmt.Println(resp)
+
+	
+
+	return root.GetRelationShipRequestFromOther[0].RequestFrom
+}
+
+/*
+This function will return all the relationship requests that this user made to other users 
+*/
+func (db *DB) MyRelationShipRequests(user_id string) models.RelationRequest{return models.RelationRequest{}}
 
 
 // func (db *DB) InitSchema(user *models.User) {
