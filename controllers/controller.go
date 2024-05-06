@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"bytes"
 	"log"
+	"github.com/Masud2017/social_media_golang/db"
+	"github.com/Masud2017/social_media_golang/models"
+	// "encoding/json"
 	
 )
 
@@ -24,18 +27,102 @@ type Controller struct {
 
 }
 
+func (controller *Controller) Index(c *gin.Context) {
+	c.JSON(200, gin.H{
+		"data": "Hello world this is the social media graph api",
+	})
+}
+
+
 func (controller *Controller) Signup(c *gin.Context) {
-	
+	db := db.DB{}
+
+	// db.InitSchema()	
 	name := c.Query("name") 
 	email := c.Query("email")
 	password := c.Query("password")
 
-	fmt.Printf("Hello world your name is :%s , email : %s and password is : %s",name,email,password)
-	infof("YOYO")
+	db.NewClient()
+	db.NewClient()
+	user := models.User{
+		Uid:      "_:user",
+		Name:     name,
+		Email:    email,
+		Password: password,
+		// Friend: []models.Relation{{
+		// 	Rel: "Father",
+		// 	User: models.User{
+		// 		Uid : "_:mk",
+		// 		Name: "MK",
+
+		// 	}, // Assuming UserId is the ID of the friend
+		// }},
+	}
+
+
+	if (db.SignupUser(&user)) {
+		fmt.Printf("Hello world your name is :%s , email : %s and password is : %s",name,email,password)
+		infof("YOYO")
+
+		c.JSON(200, gin.H{
+			"name":name,
+			"email":email,
+			"password":password,
+		})
+
+	} else {
+		c.JSON(200, gin.H{
+			"data": "The user that you have mentioned is already exists in the db please use an unique user",
+		})
+	}
+}
+
+
+func (controller *Controller) UserList(c *gin.Context) {
+	db := db.DB{}
+	db.NewClient()
+
+	userList := db.GetUserList()
+
+	// res,_ :=json.MarshalIndent(userList, "", "\t")
+	c.JSON(200, gin.H{
+		"data":userList,
+	})
+
+}
+
+func (controller *Controller) Me(c *gin.Context) {
+	my_id := c.Param("my_id")
+	db := db.DB{}
+	db.NewClient()
+	fmt.Println("My id is : "+my_id)
+	
+	me := db.Me(my_id)
+
+	
 
 	c.JSON(200, gin.H{
-		"name":name,
-		"email":email,
-		"password":password,
+		"data": me,
 	})
+}
+
+// func (controller *Controller) RequestRelationship(c *gin.Context) {
+
+// }
+
+func (controller *Controller) AddFriend(c *gin.Context) {}
+func (controller *Controller) AddMother(c *gin.Context) {}
+func (controller *Controller) AddFather(c *gin.Context) {}
+func (controller *Controller) AddSon(c *gin.Context) {}
+
+func (controller *Controller) AcceptReq(c *gin.Context) {
+
+}
+
+func (controller *Controller) MyRelationList(c *gin.Context) {
+
+}
+
+func (controller *Controller) RelationShipRequests(c *gin.Context) {
+	
 }

@@ -11,12 +11,23 @@ func SetupRouter()  *gin.Engine {
 	router := gin.Default();
 
 
-	indexController := new(controllers.IndexController)
-	controller := new(controllers.Controller)
 	
+	controller := new(controllers.Controller)
 
-	router.GET("/", indexController.Index)
-	router.GET("/helloworld2",controller.Signup)
+	router.GET("/",controller.Index)
+	
+	router.GET("/signup",controller.Signup)
+	router.GET("/userlist",controller.UserList)
+	router.GET("/me/:my_id",controller.Me)
+	router.GET("/acceptreq",controller.AcceptReq)
+
+	router.GET("/addfriend/:user_id",controller.AddFriend)
+	router.GET("/addmother/:user_id",controller.AddMother)
+	router.GET("/addfather/:user_id",controller.AddFather)
+	router.GET("/addson/:user_id",controller.AddSon)
+
+	router.GET("/myrelationlist",controller.MyRelationList)
+	router.GET("/relationship_reqs",controller.RelationShipRequests)
 
 	return router;
 }
