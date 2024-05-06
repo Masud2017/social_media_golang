@@ -110,9 +110,9 @@ func (controller *Controller) Me(c *gin.Context) {
 
 // }
 
-func (controller *Controller) AddRelation(c *gin.Context) {
+func (controller *Controller) AddFriend(c *gin.Context) {
 	my_id := c.Query("my_id")
-	rel := c.Query("rel")
+	rel := "Friend"
 	req_to := c.Query("req_to")
 
 
@@ -136,6 +136,85 @@ func (controller *Controller) AddRelation(c *gin.Context) {
 
 }
 
+func (controller *Controller) AddFather(c *gin.Context) {
+	my_id := c.Query("my_id")
+	rel := "Father"
+	req_to := c.Query("req_to")
+
+
+	db := db.DB{}
+	db.NewClient()
+
+	me := db.Me(my_id)
+	req_to_user := db.Me(req_to)
+
+	relReq := models.RelationRequest{
+		Uid : "_:req",
+		ReqRel : rel,
+		ReqTo : req_to_user,
+	}
+
+	relReq = db.RequestForRelationship(relReq,me)
+
+	c.JSON(200, gin.H{
+		"data": relReq,
+	})
+
+}
+
+func (controller *Controller) AddMother(c *gin.Context) {
+	my_id := c.Query("my_id")
+	rel := "Mother"
+	req_to := c.Query("req_to")
+
+
+	db := db.DB{}
+	db.NewClient()
+
+	me := db.Me(my_id)
+	req_to_user := db.Me(req_to)
+
+	relReq := models.RelationRequest{
+		Uid : "_:req",
+		ReqRel : rel,
+		ReqTo : req_to_user,
+	}
+
+	relReq = db.RequestForRelationship(relReq,me)
+
+	c.JSON(200, gin.H{
+		"data": relReq,
+	})
+
+}
+
+func (controller *Controller) AddSon(c *gin.Context) {
+	my_id := c.Query("my_id")
+	rel := "Son"
+	req_to := c.Query("req_to")
+
+
+	db := db.DB{}
+	db.NewClient()
+
+	me := db.Me(my_id)
+	req_to_user := db.Me(req_to)
+
+	relReq := models.RelationRequest{
+		Uid : "_:req",
+		ReqRel : rel,
+		ReqTo : req_to_user,
+	}
+
+	relReq = db.RequestForRelationship(relReq,me)
+
+	c.JSON(200, gin.H{
+		"data": relReq,
+	})
+
+}
+
+
 func (controller *Controller) AcceptReq(c *gin.Context) {
 
 }
@@ -145,6 +224,19 @@ func (controller *Controller) CancelReq(c *gin.Context) {
 }
 
 func (controller *Controller) MyRelationList(c *gin.Context) {
+	user_id := c.Param("user_id")
+
+	db := db.DB{}
+	db.NewClient()
+
+	fmt.Println(user_id)
+
+	relationList := db.MyRelationList(user_id)
+
+	// res,_ :=json.MarshalIndent(userList, "", "\t")
+	c.JSON(200, gin.H{
+		"data":relationList,
+	})
 
 }
 
@@ -162,10 +254,20 @@ func (controller *Controller) RelationShipRequests(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"data":relationShipReqList,
 	})
-
-	
 }
 
 func (controller *Controller) MyRelationShipRequests(c *gin.Context) {
-	
+	user_id := c.Param("user_id")
+
+	db := db.DB{}
+	db.NewClient()
+
+	fmt.Println(user_id)
+
+	relationShipReqList := db.MyRelationShipRequests(user_id)
+
+	// res,_ :=json.MarshalIndent(userList, "", "\t")
+	c.JSON(200, gin.H{
+		"data":relationShipReqList,
+	})
 }

@@ -22,11 +22,14 @@ func SetupRouter()  *gin.Engine {
 	router.GET("/acceptreq",controller.AcceptReq)
 	router.GET("/cancelreq",controller.CancelReq)
 
-	router.GET("/addrelation",controller.AddRelation)
+	router.GET("/addfriend",controller.AddFriend)
+	router.GET("/addfather",controller.AddFather)
+	router.GET("/addmother",controller.AddMother)
+	router.GET("/addson",controller.AddSon)
 
-	router.GET("/myrelationlist",controller.MyRelationList)
+	router.GET("/myrelationlist/:user_id",controller.MyRelationList)
 	router.GET("/relationship_reqs/:user_id",controller.RelationShipRequests)
-	router.GET("/my_relationship_reqs",controller.RelationShipRequests)
+	router.GET("/my_relationship_reqs/:user_id",controller.MyRelationShipRequests)
 
 	return router;
 }

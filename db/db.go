@@ -321,7 +321,94 @@ func (db *DB) RelationShipRequests(user_id string) []models.RelationRequestFromO
 /*
 This function will return all the relationship requests that this user made to other users 
 */
-func (db *DB) MyRelationShipRequests(user_id string) models.RelationRequest{return models.RelationRequest{}}
+func (db *DB) MyRelationShipRequests(user_id string) []models.RelationRequest {
+	db.InitSchema()
+	
+	query := `
+	{
+		getRelationShipRequest(func: uid(`+user_id+`)) {
+			request {
+				uid
+				req_rel
+				req_to {
+					uid
+					name
+					email
+				}
+			}
+		}
+	}
+	`
+
+	resp, err := db.Client.NewTxn().Query(db.ctx,query)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	
+	type Root struct {
+		GetRelationShipRequest []models.User `json:"getRelationShipRequest,omitempty"`
+	}
+	var root Root
+	
+	if err := json.Unmarshal(resp.GetJson(), &root); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Printing the value of resp :")
+
+	fmt.Println(resp)
+
+	
+
+	return root.GetRelationShipRequest[0].Request
+}
+
+
+func (db *DB) MyRelationList(user_id string) []models.Relation {
+	db.InitSchema()
+	
+	query := `
+	{
+		getRelations(func: uid(`+user_id+`)) {
+			friend {
+				uid
+				rel
+				user {
+					uid
+					name
+					email
+				}
+			}
+		}
+	}
+	`
+
+	resp, err := db.Client.NewTxn().Query(db.ctx,query)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	
+	type Root struct {
+		GetRelations []models.User `json:"getRelations,omitempty"`
+	}
+	var root Root
+	
+	if err := json.Unmarshal(resp.GetJson(), &root); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Printing the value of resp :")
+
+	fmt.Println(resp)
+
+	
+
+	return root.GetRelations[0].Friend
+}
+
+func (db *DB) AcceptReq() {
+	
+}
 
 
 // func (db *DB) InitSchema(user *models.User) {
