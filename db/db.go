@@ -406,10 +406,20 @@ func (db *DB) MyRelationList(user_id string) []models.Relation {
 	return root.GetRelations[0].Friend
 }
 
-func (db *DB) AcceptReq() {
-	
+/*Accepts request from other user*/
+func (db *DB) AcceptReq(user_id string,req_id string) {
+
 }
 
+/*Cancels request from other user*/
+func (db *DB) CancelReq(user_id string,req_id string) {
+
+}
+
+/*Cancels request to other user*/
+func (db *DB) CancelToReq(user_id string,req_id string) {
+
+}
 
 // func (db *DB) InitSchema(user *models.User) {
 // 	op := &api.Operation{}
