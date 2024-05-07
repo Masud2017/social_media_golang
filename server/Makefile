@@ -1,4 +1,4 @@
+download-dep:
+	go mod tidy
 build:
-	go build -o bin/run
-
-.PHONY: all test clean
+	CGO_ENABLED=0 GOOS=linux go build -o /social_media
