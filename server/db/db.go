@@ -705,8 +705,8 @@ func (db *DB) AcceptReq(user_id string,req_id string) bool {
 				Name: requestFromOtherUser.ReqFrom.Name,
 				Email: requestFromOtherUser.ReqFrom.Email,
 				Password: requestFromOtherUser.ReqFrom.Password,
-				Father : []models.Relation{{
-					Rel: requestFromOtherUser.ReqRel,
+				Son : []models.Relation{{
+					Rel: "Son",
 					User: user,
 					},
 				},
@@ -740,8 +740,8 @@ func (db *DB) AcceptReq(user_id string,req_id string) bool {
 				Name: requestFromOtherUser.ReqFrom.Name,
 				Email: requestFromOtherUser.ReqFrom.Email,
 				Password: requestFromOtherUser.ReqFrom.Password,
-				Mother : []models.Relation{{
-					Rel: requestFromOtherUser.ReqRel,
+				Son : []models.Relation{{
+					Rel: "Son",
 					User: user,
 					},
 				},
@@ -775,8 +775,8 @@ func (db *DB) AcceptReq(user_id string,req_id string) bool {
 				Name: requestFromOtherUser.ReqFrom.Name,
 				Email: requestFromOtherUser.ReqFrom.Email,
 				Password: requestFromOtherUser.ReqFrom.Password,
-				Son : []models.Relation{{
-					Rel: requestFromOtherUser.ReqRel,
+				Father : []models.Relation{{
+					Rel: "Father",
 					User: user,
 					},
 				},
