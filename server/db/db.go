@@ -19,7 +19,7 @@ type DB struct {
 }
 
 func (db *DB) NewClient() {
-	d, err := grpc.Dial("localhost:9080", grpc.WithInsecure())
+	d, err := grpc.Dial("database:9080", grpc.WithInsecure())
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1060,9 +1060,9 @@ func (db *DB) CancelReq(user_id string,req_id string) bool {
 }
 
 /*Cancels request to other user*/
-func (db *DB) CancelToReq(user_id string,req_id string) {
+// func (db *DB) CancelToReq(user_id string,req_id string) {
 
-}
+// }
 
 // func (db *DB) InitSchema(user *models.User) {
 // 	op := &api.Operation{}
