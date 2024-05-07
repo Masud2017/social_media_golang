@@ -11,6 +11,9 @@ docker compose command:
 
 # About the api :
 ### Api endpoint list : 
+#### The api is accessible to the port - 4442
+
+
 Since this project is a test project, I didn't made any of them post. All of those endpoints are accessible by GET request
 - /signup [GET] -> params : ?name=[name]&email=[email]&password=[password] 
 - /userlist [GET]
