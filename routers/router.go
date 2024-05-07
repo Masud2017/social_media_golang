@@ -16,18 +16,18 @@ func SetupRouter()  *gin.Engine {
 
 	router.GET("/",controller.Index)
 	
-	router.GET("/signup",controller.Signup)
-	router.GET("/userlist",controller.UserList)
-	router.GET("/me/:my_id",controller.Me)
-	router.GET("/acceptreq",controller.AcceptReq)
-	router.GET("/cancelreq",controller.CancelReq)
+	router.GET("/signup",controller.Signup) // done
+	router.GET("/userlist",controller.UserList) // done
+	router.GET("/me/:my_id",controller.Me) // done
+	router.GET("/acceptreq/:user_id/:req_id",controller.AcceptReq) // done
+	router.GET("/cancelreq/:user_id/:req_id",controller.CancelReq) // done
 
-	router.GET("/addfriend",controller.AddFriend)
-	router.GET("/addfather",controller.AddFather)
-	router.GET("/addmother",controller.AddMother)
-	router.GET("/addson",controller.AddSon)
+	router.GET("/addfriend",controller.AddFriend) // done
+	router.GET("/addfather",controller.AddFather) // done
+	router.GET("/addmother",controller.AddMother) // done
+	router.GET("/addson",controller.AddSon) // done
 
-	router.GET("/myrelationlist/:user_id",controller.MyRelationList)
+	router.GET("/myrelationlist/:user_id",controller.MyRelationList) //done
 	router.GET("/relationship_reqs/:user_id",controller.RelationShipRequests)
 	router.GET("/my_relationship_reqs/:user_id",controller.MyRelationShipRequests)
 

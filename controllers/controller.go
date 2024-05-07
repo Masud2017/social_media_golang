@@ -123,7 +123,7 @@ func (controller *Controller) AddFriend(c *gin.Context) {
 	req_to_user := db.Me(req_to)
 
 	relReq := models.RelationRequest{
-		Uid : "_:req",
+		Uid : "_:reqrel",
 		ReqRel : rel,
 		ReqTo : req_to_user,
 	}
@@ -216,11 +216,33 @@ func (controller *Controller) AddSon(c *gin.Context) {
 
 
 func (controller *Controller) AcceptReq(c *gin.Context) {
+	user_id := c.Param("user_id")
+	req_id := c.Param("req_id")
 
+ 
+	db := db.DB{}
+	db.NewClient()
+
+	acceptRequestStatus := db.AcceptReq(user_id,req_id)
+
+	c.JSON(200, gin.H{
+		"data": acceptRequestStatus,
+	})
 }
 
 func (controller *Controller) CancelReq(c *gin.Context) {
+	user_id := c.Param("user_id")
+	req_id := c.Param("req_id")
 
+ 
+	db := db.DB{}
+	db.NewClient()
+
+	cancelRequestStatus := db.CancelReq(user_id,req_id)
+
+	c.JSON(200, gin.H{
+		"data": cancelRequestStatus,
+	})
 }
 
 func (controller *Controller) MyRelationList(c *gin.Context) {
@@ -231,7 +253,9 @@ func (controller *Controller) MyRelationList(c *gin.Context) {
 
 	fmt.Println(user_id)
 
-	relationList := db.MyRelationList(user_id)
+	friendList,fatherList,motherList,sonList := db.MyRelationList(user_id)
+
+	relationList := [][]models.Relation{friendList,fatherList,motherList,sonList}
 
 	// res,_ :=json.MarshalIndent(userList, "", "\t")
 	c.JSON(200, gin.H{
